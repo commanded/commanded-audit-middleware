@@ -10,7 +10,9 @@ Records every dispatched command to the configured database storage. Includes wh
 
     ```elixir
     def deps do
-      [{:commanded_audit_middleware, github: "slashdotdash/commanded-audit-middleware"}]
+      [
+        {:commanded_audit_middleware, github: "slashdotdash/commanded-audit-middleware"},
+      ]
     end
     ```
 
@@ -18,6 +20,47 @@ Records every dispatched command to the configured database storage. Includes wh
 
     ```elixir
     def application do
-      [applications: [:commanded_audit_middleware]]
+      [
+        applications: [
+          :commanded_audit_middleware,
+        ]
+      ]
+    end
+    ```
+
+  3. Add the following config section to `config/config.exs`:
+
+    ```elixir
+    config :commanded_audit_middleware,
+      ecto_repos: [Commanded.Middleware.Auditing.Repo],
+      serializer: Commanded.Serialization.JsonSerializer
+    ```
+
+  4. Add the following config section to each environment's config (e.g. `config/dev.exs`):
+
+    ```elixir
+    config :commanded_audit_middleware, Commanded.Middleware.Auditing.Repo,
+      adapter: Ecto.Adapters.Postgres,
+      database: "commanded_audit_middleware_dev",
+      username: "postgres",
+      password: "postgres",
+      hostname: "localhost",
+      port: "5432"
+    ```
+
+  5. Create and migrate the command audit database:
+
+    ```
+    mix ecto.create -r Commanded.Middleware.Auditing.Repo
+    mix ecto.migrate -r Commanded.Middleware.Auditing.Repo
+    ```
+
+  6. Add the middleware to your application's Commanded router.
+
+    ```elixir
+    defmodule Router do
+      use Commanded.Commands.Router
+
+      middleware Commanded.Middleware.Auditing
     end
     ```
