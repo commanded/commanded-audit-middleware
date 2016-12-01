@@ -1,6 +1,6 @@
 # Commanded audit middleware
 
-Command auditing middleware for Commanded CQRS/ES applications.
+Command auditing middleware for [Commanded](https://github.com/slashdotdash/commanded) CQRS/ES applications.
 
 Records every dispatched command to the configured database storage. Includes whether the command was successfully handled, or any error.
 
