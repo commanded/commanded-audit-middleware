@@ -50,17 +50,24 @@ defmodule Commanded.Middleware.Auditing do
     pipeline
   end
 
-  defp failure(%Pipeline{assigns: %{command_uuid: command_uuid, error: error, error_reason: error_reason}} = pipeline) do
+  defp failure(%Pipeline{assigns: %{command_uuid: command_uuid}} = pipeline) do
     command_uuid
     |> query_by_command_uuid
     |> Repo.update_all(set: [
         success: false,
         execution_duration_usecs: delta(pipeline),
-        error: to_string(error),
-        error_reason: to_string(error_reason),
+        error: extract(pipeline, :error),
+        error_reason: extract(pipeline, :error_reason),
       ])
 
     pipeline
+  end
+
+  defp extract(%Pipeline{assigns: assigns}, key) do
+    case Map.get(assigns, key) do
+      nil -> nil
+      value -> inspect(value)
+    end
   end
 
   defp query_by_command_uuid(command_uuid) do

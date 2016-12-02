@@ -37,8 +37,19 @@ defmodule Commanded.Middleware.AuditingTest do
 
     test "should record failure", %{audit: audit} do
       assert audit.success == false
-      assert audit.error == "failed"
-      assert audit.error_reason == "failure"
+      assert audit.error == ":failed"
+      assert audit.error_reason == "\"failure\""
+      assert audit.execution_duration_usecs > 0
+    end
+  end
+
+  describe "after failed command dispatch but no reason" do
+    setup [:execute_before_dispatch, :execute_after_failure_no_reason, :get_audit]
+
+    test "should record failure", %{audit: audit} do
+      assert audit.success == false
+      assert audit.error == ":failed"
+      assert audit.error_reason == nil
       assert audit.execution_duration_usecs > 0
     end
   end
@@ -59,6 +70,15 @@ defmodule Commanded.Middleware.AuditingTest do
       pipeline
       |> Pipeline.assign(:error, :failed)
       |> Pipeline.assign(:error_reason, "failure")
+      |> Auditing.after_failure
+
+    [pipeline: pipeline]
+  end
+
+  defp execute_after_failure_no_reason(%{pipeline: pipeline}) do
+    pipeline =
+      pipeline
+      |> Pipeline.assign(:error, :failed)
       |> Auditing.after_failure
 
     [pipeline: pipeline]
