@@ -75,7 +75,7 @@ defmodule Commanded.Middleware.Auditing do
     where: audit.command_uuid == ^command_uuid
   end
 
-  defp serialize(term), do: serializer.serialize(term)
+  defp serialize(term), do: serializer().serialize(term)
 
   defp serializer do
     Application.get_env(:commanded_audit_middleware, :serializer)

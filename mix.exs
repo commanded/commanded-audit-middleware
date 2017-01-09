@@ -5,11 +5,11 @@ defmodule Commanded.Middleware.Auditing.Mixfile do
     [
       app: :commanded_audit_middleware,
       version: "0.1.1",
-      elixir: "~> 1.3",
+      elixir: "~> 1.4",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
-      deps: deps,
-      aliases: aliases,
+      deps: deps(),
+      aliases: aliases(),
     ]
   end
 
@@ -26,10 +26,10 @@ defmodule Commanded.Middleware.Auditing.Mixfile do
 
   defp deps do
     [
-      {:commanded, "~> 0.8", optional: true},
-      {:ecto, "~> 2.1.0-rc.4", override: true},
+      {:commanded, "~> 0.8"},
+      {:ecto, "~> 2.1"},
       {:mix_test_watch, "~> 0.2", only: :dev},
-      {:postgrex, "~> 1.0.0-rc.1", override: true},
+      {:postgrex, "~> 0.13"},
       {:uuid, "~> 1.1"},
     ]
   end
