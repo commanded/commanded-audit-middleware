@@ -44,6 +44,7 @@ Command auditing middleware for Commanded CQRS/ES applications
     [
       {:commanded, "~> 0.13", runtime: false},
       {:ecto, "~> 2.2"},
+      {:ex_doc, "~> 0.16", only: :dev},
       {:mix_test_watch, "~> 0.5", only: :dev},
       {:postgrex, "~> 0.13"},
       {:uuid, "~> 1.1"},
