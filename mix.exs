@@ -4,7 +4,7 @@ defmodule Commanded.Middleware.Auditing.Mixfile do
   def project do
     [
       app: :commanded_audit_middleware,
-      version: "0.1.2",
+      version: "0.1.3",
       elixir: "~> 1.4",
       description: description(),
       package: package(),
@@ -32,7 +32,7 @@ Command auditing middleware for Commanded CQRS/ES applications
 
   defp package do
     [
-      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      files: ["lib", "priv", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Ben Smith"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/slashdotdash/commanded-audit-middleware",
