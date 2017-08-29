@@ -11,24 +11,11 @@ Records every dispatched command to the configured database storage. Includes wh
       ```elixir
       def deps do
         [
-          {:commanded_audit_middleware, github: "slashdotdash/commanded-audit-middleware"},
+          {:commanded_audit_middleware, "~> 0.1"},
         ]
       end
       ```
-
-  2. Ensure `commanded_audit_middleware` is started before your application:
-
-      ```elixir
-      def application do
-        [
-          applications: [
-            :commanded_audit_middleware,
-          ]
-        ]
-      end
-      ```
-
-  3. Add the following config section to `config/config.exs`:
+  2. Add the following config section to `config/config.exs`:
 
       ```elixir
       config :commanded_audit_middleware,
@@ -36,7 +23,7 @@ Records every dispatched command to the configured database storage. Includes wh
         serializer: Commanded.Serialization.JsonSerializer
       ```
 
-  4. Add the following config section to each environment's config (e.g. `config/dev.exs`):
+  3. Add the following config section to each environment's config (e.g. `config/dev.exs`):
 
       ```elixir
       config :commanded_audit_middleware, Commanded.Middleware.Auditing.Repo,
@@ -46,6 +33,12 @@ Records every dispatched command to the configured database storage. Includes wh
         password: "postgres",
         hostname: "localhost",
         port: "5432"
+      ```
+
+  4. Fetch and compile mix dependencies:
+
+      ```console
+      $ mix do deps.get, deps.compile
       ```
 
   5. Create and migrate the command audit database:

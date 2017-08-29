@@ -12,7 +12,7 @@ defmodule Commanded.Middleware.Auditing do
     pipeline
     |> assign(:command_uuid, UUID.uuid4)
     |> assign(:occurred_at, DateTime.utc_now)
-    |> audit
+    |> audit()
   end
 
   def after_dispatch(%Pipeline{} = pipeline) do
