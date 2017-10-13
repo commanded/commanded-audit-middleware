@@ -1,6 +1,6 @@
 Application.stop(:commanded_audit_middleware)
 
-ExUnit.start
+ExUnit.start()
 
 Mix.Task.run "ecto.reset", ~w(--quiet)
 
