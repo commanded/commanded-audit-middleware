@@ -13,16 +13,31 @@ defmodule Commanded.Middleware.AuditingTest do
   end
 
   describe "before command dispatch" do
-    setup [:execute_before_dispatch, :get_audit]
+    setup [
+      :execute_before_dispatch,
+      :get_audit,
+    ]
 
-    test "should record command", %{audit: audit} do
+    @tag :wip
+    test "should record command", %{pipeline: pipeline, audit: audit} do
       assert audit != nil
       assert audit.success == nil
+      assert audit.occurred_at != nil
+      assert audit.occurred_at == DateTime.to_naive(pipeline.assigns.occurred_at)
+      assert audit.causation_id == pipeline.causation_id
+      assert audit.correlation_id == pipeline.correlation_id
+      assert audit.command_uuid == pipeline.command_uuid
+      assert audit.data == "{\"name\":\"Ben\",\"age\":34}"
+      assert audit.metadata == "{\"user\":\"user@example.com\"}"
     end
   end
 
   describe "after successful command dispatch" do
-    setup [:execute_before_dispatch, :execute_after_dispatch, :get_audit]
+    setup [
+      :execute_before_dispatch,
+      :execute_after_dispatch,
+      :get_audit,
+    ]
 
     test "should record success", %{audit: audit} do
       assert audit.success == true
@@ -33,7 +48,11 @@ defmodule Commanded.Middleware.AuditingTest do
   end
 
   describe "after failed command dispatch" do
-    setup [:execute_before_dispatch, :execute_after_failure, :get_audit]
+    setup [
+      :execute_before_dispatch,
+      :execute_after_failure,
+      :get_audit,
+    ]
 
     test "should record failure", %{audit: audit} do
       assert audit.success == false
@@ -44,7 +63,11 @@ defmodule Commanded.Middleware.AuditingTest do
   end
 
   describe "after failed command dispatch but no reason" do
-    setup [:execute_before_dispatch, :execute_after_failure_no_reason, :get_audit]
+    setup [
+      :execute_before_dispatch,
+      :execute_after_failure_no_reason,
+      :get_audit,
+    ]
 
     test "should record failure", %{audit: audit} do
       assert audit.success == false
@@ -55,14 +78,21 @@ defmodule Commanded.Middleware.AuditingTest do
   end
 
   defp execute_before_dispatch(_context) do
-    [pipeline: Auditing.before_dispatch(%Pipeline{
-      assigns: %{user: "user@example.com"},
+    pipeline = Auditing.before_dispatch(%Pipeline{
+      causation_id: UUID.uuid4(),
+      correlation_id: UUID.uuid4(),
       command: %Command{name: "Ben", age: 34},
-    })]
+      command_uuid: UUID.uuid4(),
+      metadata: %{user: "user@example.com"},
+    })
+
+    [pipeline: pipeline]
   end
 
   defp execute_after_dispatch(%{pipeline: pipeline}) do
-    [pipeline: Auditing.after_dispatch(pipeline)]
+    pipeline = Auditing.after_dispatch(pipeline)
+
+    [pipeline: pipeline]
   end
 
   defp execute_after_failure(%{pipeline: pipeline}) do
@@ -70,7 +100,7 @@ defmodule Commanded.Middleware.AuditingTest do
       pipeline
       |> Pipeline.assign(:error, :failed)
       |> Pipeline.assign(:error_reason, "failure")
-      |> Auditing.after_failure
+      |> Auditing.after_failure()
 
     [pipeline: pipeline]
   end
@@ -84,7 +114,9 @@ defmodule Commanded.Middleware.AuditingTest do
     [pipeline: pipeline]
   end
 
-  defp get_audit(%{pipeline: pipeline}) do
-    [audit: Repo.get(CommandAudit, pipeline.assigns.command_uuid)]
+  defp get_audit(%{pipeline: %Pipeline{command_uuid: command_uuid}}) do
+    audit = Repo.get(CommandAudit, command_uuid)
+
+    [audit: audit]
   end
 end
