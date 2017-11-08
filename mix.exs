@@ -35,7 +35,7 @@ Command auditing middleware for Commanded CQRS/ES applications
       files: ["lib", "priv", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Ben Smith"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/slashdotdash/commanded-audit-middleware",
+      links: %{"GitHub" => "https://github.com/commanded/commanded-audit-middleware",
                "Docs" => "https://hexdocs.pm/commanded_audit_middleware/"}
     ]
   end
