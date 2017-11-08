@@ -1,8 +1,16 @@
 # Commanded audit middleware
 
-Command auditing middleware for [Commanded](https://github.com/slashdotdash/commanded) CQRS/ES applications.
+Command auditing middleware for [Commanded](https://github.com/commanded/commanded) CQRS/ES applications.
 
 Records every dispatched command to the configured database storage. Includes whether the command was successfully handled, or any error.
+
+Please refer to the [CHANGELOG](CHANGELOG.md) for features, bug fixes, and any upgrade advice included for each release.
+
+MIT License
+
+[![Build Status](https://travis-ci.org/commanded/commanded-audit-middleware.svg?branch=master)](https://travis-ci.org/commanded/commanded-audit-middleware)
+
+---
 
 ## Installation
 
@@ -11,7 +19,7 @@ Records every dispatched command to the configured database storage. Includes wh
       ```elixir
       def deps do
         [
-          {:commanded_audit_middleware, "~> 0.1"},
+          {:commanded_audit_middleware, "~> 0.2"},
         ]
       end
       ```
