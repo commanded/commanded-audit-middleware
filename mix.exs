@@ -5,7 +5,7 @@ defmodule Commanded.Middleware.Auditing.Mixfile do
     [
       app: :commanded_audit_middleware,
       version: "0.2.0",
-      elixir: "~> 1.4",
+      elixir: "~> 1.5",
       description: description(),
       package: package(),
       build_embedded: Mix.env == :prod,

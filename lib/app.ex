@@ -2,8 +2,8 @@ defmodule Commanded.Middleware.Auditing.Supervisor do
   @moduledoc """
   Command auditing middleware for Commanded CQRS/ES applications.
 
-  Records every dispatched command to the configured database storage.
-  Includes whether the command was successfully handled, or any error.
+  Records every dispatched command to the configured database storage. Includes
+  whether the command was successfully handled, or any error.
   """
 
   use Application

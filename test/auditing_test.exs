@@ -6,10 +6,7 @@ defmodule Commanded.Middleware.AuditingTest do
   alias Commanded.Middleware.Pipeline
 
   defmodule Command do
-    defstruct [
-      name: nil,
-      age: nil,
-    ]
+    defstruct [:name, :age]
   end
 
   describe "before command dispatch" do
@@ -18,7 +15,6 @@ defmodule Commanded.Middleware.AuditingTest do
       :get_audit,
     ]
 
-    @tag :wip
     test "should record command", %{pipeline: pipeline, audit: audit} do
       assert audit != nil
       assert audit.success == nil
