@@ -17,7 +17,7 @@ defmodule Commanded.Middleware.AuditingTest do
 
     test "should record command", %{pipeline: pipeline, audit: audit} do
       assert audit != nil
-      assert audit.success == nil
+      assert is_nil audit.success
       assert audit.occurred_at != nil
       assert audit.occurred_at == DateTime.to_naive(pipeline.assigns.occurred_at)
       assert audit.causation_id == pipeline.causation_id
@@ -25,6 +25,7 @@ defmodule Commanded.Middleware.AuditingTest do
       assert audit.command_uuid == pipeline.command_uuid
       assert audit.data == "{\"name\":\"Ben\",\"age\":34}"
       assert audit.metadata == "{\"user\":\"user@example.com\"}"
+      assert is_nil audit.execution_duration_usecs
     end
   end
 
@@ -37,8 +38,8 @@ defmodule Commanded.Middleware.AuditingTest do
 
     test "should record success", %{audit: audit} do
       assert audit.success == true
-      assert audit.error == nil
-      assert audit.error_reason == nil
+      assert is_nil audit.error
+      assert is_nil audit.error_reason
       assert audit.execution_duration_usecs > 0
     end
   end
@@ -68,7 +69,7 @@ defmodule Commanded.Middleware.AuditingTest do
     test "should record failure", %{audit: audit} do
       assert audit.success == false
       assert audit.error == ":failed"
-      assert audit.error_reason == nil
+      assert is_nil audit.error_reason
       assert audit.execution_duration_usecs > 0
     end
   end

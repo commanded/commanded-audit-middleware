@@ -10,6 +10,7 @@ defmodule Commanded.Middleware.Auditing do
 
   def before_dispatch(%Pipeline{} = pipeline) do
     pipeline
+    |> assign(:start_time, monotonic_time())
     |> assign(:occurred_at, DateTime.utc_now())
     |> audit()
   end
@@ -83,16 +84,19 @@ defmodule Commanded.Middleware.Auditing do
     where: audit.command_uuid == ^command_uuid
   end
 
-  defp serialize(term),
-    do: serializer().serialize(term)
+  defp monotonic_time, do: System.monotonic_time(:microseconds)
 
-  defp serializer, do: Application.get_env(:commanded_audit_middleware, :serializer)
+  defp serialize(term), do: serializer().serialize(term)
 
-  # calculate the delta, in usecs, between command occurred at date/time and now
-  defp delta(%Pipeline{assigns: %{occurred_at: occurred_at}}) do
-    now_usecs = DateTime.utc_now |> DateTime.to_unix(:microseconds)
-    occurred_at_usecs = occurred_at |> DateTime.to_unix(:microseconds)
+  defp serializer do
+    Application.get_env(:commanded_audit_middleware, :serializer) ||
+      raise ArgumentError, "Commanded audit middleware expects `:serializer` to be configured"
+  end
 
-    now_usecs - occurred_at_usecs
+  # calculate the delta, in microseconds, between command start and end time (now)
+  defp delta(%Pipeline{assigns: %{start_time: start_time}}) do
+    end_time = monotonic_time()
+
+    end_time - start_time
   end
 end
