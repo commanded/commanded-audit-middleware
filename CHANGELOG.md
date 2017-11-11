@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+### Enhancements
+
+- Use `System.monotonic_time/1` to calculate command execution duration.
+
 ## 0.2.0
 
 ### Enhancements
