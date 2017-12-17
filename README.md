@@ -30,8 +30,14 @@ MIT License
         ecto_repos: [Commanded.Middleware.Auditing.Repo],
         serializer: Commanded.Serialization.JsonSerializer
       ```
+  3. By default, `commanded_audit_middleware` should filter all `password`, `password_confirmation` and `secret` in your schemas.
+     If you want to **override** and define your own filters, you should add the following to your `config/config.exs`:
+      ```elixir
+      config :commanded_audit_middleware,
+        filter_fields: [:credit_card_number, :btc_private_key]
+      ```
 
-  3. Add the following config section to each environment's config (e.g. `config/dev.exs`):
+  4. Add the following config section to each environment's config (e.g. `config/dev.exs`):
 
       ```elixir
       config :commanded_audit_middleware, Commanded.Middleware.Auditing.Repo,
@@ -43,20 +49,20 @@ MIT License
         port: "5432"
       ```
 
-  4. Fetch and compile mix dependencies:
+  5. Fetch and compile mix dependencies:
 
       ```console
       $ mix do deps.get, deps.compile
       ```
 
-  5. Create and migrate the command audit database:
+  6. Create and migrate the command audit database:
 
       ```console
       $ mix ecto.create -r Commanded.Middleware.Auditing.Repo
       $ mix ecto.migrate -r Commanded.Middleware.Auditing.Repo
       ```
-
-  6. Add the middleware to your application's Commanded router.
+  
+  7. Add the middleware to your application's Commanded router.
 
       ```elixir
       defmodule Router do

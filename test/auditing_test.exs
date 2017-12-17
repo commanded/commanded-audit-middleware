@@ -6,7 +6,7 @@ defmodule Commanded.Middleware.AuditingTest do
   alias Commanded.Middleware.Pipeline
 
   defmodule Command do
-    defstruct [:name, :age]
+    defstruct [:name, :age, :password, :password_confirmation, :secret]
   end
 
   describe "before command dispatch" do
@@ -23,7 +23,7 @@ defmodule Commanded.Middleware.AuditingTest do
       assert audit.causation_id == pipeline.causation_id
       assert audit.correlation_id == pipeline.correlation_id
       assert audit.command_uuid == pipeline.command_uuid
-      assert audit.data == "{\"name\":\"Ben\",\"age\":34}"
+      assert audit.data == "{\"secret\":\"[FILTERED]\",\"password_confirmation\":\"[FILTERED]\",\"password\":\"[FILTERED]\",\"name\":\"Ben\",\"age\":34}"
       assert audit.metadata == "{\"user\":\"user@example.com\"}"
       assert is_nil audit.execution_duration_usecs
     end
@@ -78,7 +78,7 @@ defmodule Commanded.Middleware.AuditingTest do
     pipeline = Auditing.before_dispatch(%Pipeline{
       causation_id: UUID.uuid4(),
       correlation_id: UUID.uuid4(),
-      command: %Command{name: "Ben", age: 34},
+      command: %Command{name: "Ben", age: 34, password: 1234, password_confirmation: 1234, secret: "I'm superdupersecret!"},
       command_uuid: UUID.uuid4(),
       metadata: %{user: "user@example.com"},
     })
