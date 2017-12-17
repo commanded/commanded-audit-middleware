@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+### Enhancements
+
+- Filter specific fields from audited commands ((#2)[https://github.com/commanded/commanded-audit-middleware/issues/2]).
+
 ## 0.2.1
 
 ### Enhancements

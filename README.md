@@ -12,17 +12,18 @@ MIT License
 
 ---
 
-## Installation
+## Getting started
 
   1. Add `commanded_audit_middleware` to your list of dependencies in `mix.exs`:
 
       ```elixir
       def deps do
         [
-          {:commanded_audit_middleware, "~> 0.2"},
+          {:commanded_audit_middleware, "~> 0.3"},
         ]
       end
       ```
+
   2. Add the following config section to `config/config.exs`:
 
       ```elixir
@@ -30,6 +31,7 @@ MIT License
         ecto_repos: [Commanded.Middleware.Auditing.Repo],
         serializer: Commanded.Serialization.JsonSerializer
       ```
+
   3. By default, `commanded_audit_middleware` should filter all `password`, `password_confirmation` and `secret` in your schemas.
      If you want to **override** and define your own filters, you should add the following to your `config/config.exs`:
       ```elixir
@@ -61,7 +63,7 @@ MIT License
       $ mix ecto.create -r Commanded.Middleware.Auditing.Repo
       $ mix ecto.migrate -r Commanded.Middleware.Auditing.Repo
       ```
-  
+
   7. Add the middleware to your application's Commanded router.
 
       ```elixir
@@ -71,3 +73,19 @@ MIT License
         middleware Commanded.Middleware.Auditing
       end
       ```
+
+### Contributing
+
+Pull requests to contribute new or improved features, and extend documentation are most welcome. Please follow the existing coding conventions.
+
+You should include unit tests to cover any changes. Run `mix test` to execute the test suite:
+
+```console
+mix deps.get
+mix test
+```
+
+### Contributors
+
+- [Ben Smith](https://github.com/slashdotdash)
+- [Iuri L. Machado](https://github.com/imetallica)
