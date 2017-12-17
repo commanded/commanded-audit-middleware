@@ -8,6 +8,8 @@ defmodule Commanded.Middleware.Auditing do
   import Pipeline
   import Ecto.Query, only: [from: 2]
 
+  @default_fields_to_filter [:password, :password_confirmation, :secret]
+
   def before_dispatch(%Pipeline{} = pipeline) do
     pipeline
     |> assign(:start_time, monotonic_time())
@@ -39,7 +41,7 @@ defmodule Commanded.Middleware.Auditing do
       correlation_id: correlation_id,
       occurred_at: occurred_at,
       command_type: Atom.to_string(command.__struct__),
-      data: serialize(command),
+      data: serialize(filter(command)),
       metadata: serialize(metadata),
     }
 
@@ -77,6 +79,17 @@ defmodule Commanded.Middleware.Auditing do
       nil -> nil
       value -> inspect(value)
     end
+  end
+
+  defp filter(data) do
+    to_filter = Application.get_env(:commanded_audit_middleware, :filter_fields, @default_fields_to_filter)
+    Enum.reduce(Map.from_struct(data), %{}, fn {key, val}, acc -> 
+      if key in to_filter do
+        Map.put(acc, key, "[FILTERED]")
+      else
+        Map.put(acc, key, val)
+      end
+    end)
   end
 
   defp query_by_command_uuid(command_uuid) do
