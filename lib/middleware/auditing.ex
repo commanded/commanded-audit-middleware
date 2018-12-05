@@ -13,7 +13,7 @@ defmodule Commanded.Middleware.Auditing do
   def before_dispatch(%Pipeline{} = pipeline) do
     pipeline
     |> assign(:start_time, monotonic_time())
-    |> assign(:occurred_at, DateTime.utc_now())
+    |> assign(:occurred_at, NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second))
     |> audit()
   end
 

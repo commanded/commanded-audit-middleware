@@ -19,7 +19,7 @@ defmodule Commanded.Middleware.AuditingTest do
       assert audit != nil
       assert is_nil audit.success
       assert audit.occurred_at != nil
-      assert audit.occurred_at == DateTime.to_naive(pipeline.assigns.occurred_at)
+      assert audit.occurred_at == pipeline.assigns.occurred_at
       assert audit.causation_id == pipeline.causation_id
       assert audit.correlation_id == pipeline.correlation_id
       assert audit.command_uuid == pipeline.command_uuid
