@@ -8,7 +8,7 @@ Please refer to the [CHANGELOG](CHANGELOG.md) for features, bug fixes, and any u
 
 MIT License
 
-[![Build Status](https://travis-ci.org/commanded/commanded-audit-middleware.svg?branch=master)](https://travis-ci.org/commanded/commanded-audit-middleware)
+[![Build Status](https://travis-ci.com/commanded/commanded-audit-middleware.svg?branch=master)](https://travis-ci.com/commanded/commanded-audit-middleware)
 
 ---
 
