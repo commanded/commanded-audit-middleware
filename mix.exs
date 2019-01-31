@@ -42,7 +42,7 @@ Command auditing middleware for Commanded CQRS/ES applications
 
   defp deps do
     [
-      {:commanded, github: "commanded/commanded", runtime: false},
+      {:commanded, "~> 0.18", runtime: false},
       {:ecto, "~> 3.0"},
       {:ecto_sql, "~> 3.0"},
       {:ex_doc, "~> 0.18", only: :dev},
