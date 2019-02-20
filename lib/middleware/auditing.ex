@@ -13,7 +13,7 @@ defmodule Commanded.Middleware.Auditing do
   def before_dispatch(%Pipeline{} = pipeline) do
     pipeline
     |> assign(:start_time, monotonic_time())
-    |> assign(:occurred_at, DateTime.utc_now())
+    |> assign(:occurred_at, NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second))
     |> audit()
   end
 
@@ -97,7 +97,7 @@ defmodule Commanded.Middleware.Auditing do
     where: audit.command_uuid == ^command_uuid
   end
 
-  defp monotonic_time, do: System.monotonic_time(:microseconds)
+  defp monotonic_time, do: System.monotonic_time(:microsecond)
 
   defp serialize(term), do: serializer().serialize(term)
 
