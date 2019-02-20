@@ -97,7 +97,7 @@ defmodule Commanded.Middleware.Auditing do
     where: audit.command_uuid == ^command_uuid
   end
 
-  defp monotonic_time, do: System.monotonic_time(:microseconds)
+  defp monotonic_time, do: System.monotonic_time(:microsecond)
 
   defp serialize(term), do: serializer().serialize(term)
 
