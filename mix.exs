@@ -43,13 +43,14 @@ Command auditing middleware for Commanded CQRS/ES applications
 
   defp deps do
     [
-      {:commanded, ">= 0.15.0", runtime: false},
+      {:commanded, ">= 0.18.0", runtime: false},
       {:ecto, "~> 3.0"},
       {:ecto_sql, "~> 3.0"},
       {:ex_doc, "~> 0.18", only: :dev},
       {:mix_test_watch, "~> 0.5", only: :dev},
       {:postgrex, "~> 0.14.0"},
       {:elixir_uuid, "~> 1.2"},
+      {:jason, "~> 1.1"}
     ]
   end
 
