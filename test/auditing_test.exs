@@ -23,7 +23,7 @@ defmodule Commanded.Middleware.AuditingTest do
       assert audit.causation_id == pipeline.causation_id
       assert audit.correlation_id == pipeline.correlation_id
       assert audit.command_uuid == pipeline.command_uuid
-      assert audit.data == "{\"secret\":\"[FILTERED]\",\"password_confirmation\":\"[FILTERED]\",\"password\":\"[FILTERED]\",\"name\":\"Ben\",\"age\":34}"
+      assert audit.data == "{\"age\":34,\"name\":\"Ben\",\"password\":\"[FILTERED]\",\"password_confirmation\":\"[FILTERED]\",\"secret\":\"[FILTERED]\"}"
       assert audit.metadata == "{\"user\":\"user@example.com\"}"
       assert is_nil audit.execution_duration_usecs
     end
