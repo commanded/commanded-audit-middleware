@@ -6,6 +6,7 @@
 
 - Upgrade to Ecto 3 and migrate to elixir_uuid ([#7](https://github.com/commanded/commanded-audit-middleware/pull/7)).
 - Fix deprecated time unit warning ([#8](https://github.com/commanded/commanded-audit-middleware/pull/8)).
+- Use `:naive_datetime_usec` type for command audit `occurred_at` field.
 
 ## 0.3.0
 

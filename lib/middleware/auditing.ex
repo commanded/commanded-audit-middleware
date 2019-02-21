@@ -13,28 +13,24 @@ defmodule Commanded.Middleware.Auditing do
   def before_dispatch(%Pipeline{} = pipeline) do
     pipeline
     |> assign(:start_time, monotonic_time())
-    |> assign(:occurred_at, NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second))
+    |> assign(:occurred_at, NaiveDateTime.utc_now())
     |> audit()
   end
 
-  def after_dispatch(%Pipeline{} = pipeline) do
-    pipeline
-    |> success()
-  end
+  def after_dispatch(%Pipeline{} = pipeline), do: success(pipeline)
 
-  def after_failure(%Pipeline{} = pipeline) do
-    pipeline
-    |> failure()
-  end
+  def after_failure(%Pipeline{} = pipeline), do: failure(pipeline)
 
-  defp audit(%Pipeline{
-    assigns: %{occurred_at: occurred_at},
-    causation_id: causation_id,
-    correlation_id: correlation_id,
-    command: command,
-    command_uuid: command_uuid,
-    metadata: metadata} = pipeline)
-  do
+  defp audit(%Pipeline{} = pipeline) do
+    %Pipeline{
+      assigns: %{occurred_at: occurred_at},
+      causation_id: causation_id,
+      correlation_id: correlation_id,
+      command: command,
+      command_uuid: command_uuid,
+      metadata: metadata
+    } = pipeline
+
     audit = %CommandAudit{
       command_uuid: command_uuid,
       causation_id: causation_id,
@@ -42,7 +38,7 @@ defmodule Commanded.Middleware.Auditing do
       occurred_at: occurred_at,
       command_type: Atom.to_string(command.__struct__),
       data: serialize(filter(command)),
-      metadata: serialize(metadata),
+      metadata: serialize(metadata)
     }
 
     Repo.insert!(audit)
@@ -50,26 +46,34 @@ defmodule Commanded.Middleware.Auditing do
     pipeline
   end
 
-  defp success(%Pipeline{command_uuid: command_uuid} = pipeline) do
+  defp success(%Pipeline{} = pipeline) do
+    %Pipeline{command_uuid: command_uuid} = pipeline
+
     command_uuid
     |> query_by_command_uuid()
-    |> Repo.update_all(set: [
+    |> Repo.update_all(
+      set: [
         success: true,
-        execution_duration_usecs: delta(pipeline),
-      ])
+        execution_duration_usecs: delta(pipeline)
+      ]
+    )
 
     pipeline
   end
 
-  defp failure(%Pipeline{command_uuid: command_uuid} = pipeline) do
+  defp failure(%Pipeline{} = pipeline) do
+    %Pipeline{command_uuid: command_uuid} = pipeline
+
     command_uuid
     |> query_by_command_uuid()
-    |> Repo.update_all(set: [
+    |> Repo.update_all(
+      set: [
         success: false,
         execution_duration_usecs: delta(pipeline),
         error: extract(pipeline, :error),
-        error_reason: extract(pipeline, :error_reason),
-      ])
+        error_reason: extract(pipeline, :error_reason)
+      ]
+    )
 
     pipeline
   end
@@ -82,8 +86,10 @@ defmodule Commanded.Middleware.Auditing do
   end
 
   defp filter(data) do
-    to_filter = Application.get_env(:commanded_audit_middleware, :filter_fields, @default_fields_to_filter)
-    Enum.reduce(Map.from_struct(data), %{}, fn {key, val}, acc -> 
+    to_filter =
+      Application.get_env(:commanded_audit_middleware, :filter_fields, @default_fields_to_filter)
+
+    Enum.reduce(Map.from_struct(data), %{}, fn {key, val}, acc ->
       if key in to_filter do
         Map.put(acc, key, "[FILTERED]")
       else
@@ -93,8 +99,7 @@ defmodule Commanded.Middleware.Auditing do
   end
 
   defp query_by_command_uuid(command_uuid) do
-    from audit in CommandAudit,
-    where: audit.command_uuid == ^command_uuid
+    from(audit in CommandAudit, where: audit.command_uuid == ^command_uuid)
   end
 
   defp monotonic_time, do: System.monotonic_time(:microsecond)
@@ -106,10 +111,12 @@ defmodule Commanded.Middleware.Auditing do
       raise ArgumentError, "Commanded audit middleware expects `:serializer` to be configured"
   end
 
-  # calculate the delta, in microseconds, between command start and end time (now)
+  # Calculate the delta, in microseconds, between command start and end time (now)
   defp delta(%Pipeline{assigns: %{start_time: start_time}}) do
     end_time = monotonic_time()
 
     end_time - start_time
   end
+
+  defp delta(%Pipeline{}), do: nil
 end
