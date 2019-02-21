@@ -19,7 +19,7 @@ MIT License
       ```elixir
       def deps do
         [
-          {:commanded_audit_middleware, "~> 0.3"},
+          {:commanded_audit_middleware, "~> 0.4"},
         ]
       end
       ```

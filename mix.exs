@@ -4,14 +4,14 @@ defmodule Commanded.Middleware.Auditing.Mixfile do
   def project do
     [
       app: :commanded_audit_middleware,
-      version: "0.3.0",
-      elixir: "~> 1.8",
+      version: "0.4.0",
+      elixir: "~> 1.7",
       description: description(),
       package: package(),
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases(),
+      aliases: aliases()
     ]
   end
 
@@ -26,9 +26,9 @@ defmodule Commanded.Middleware.Auditing.Mixfile do
   end
 
   defp description do
-"""
-Command auditing middleware for Commanded CQRS/ES applications
-"""
+    """
+    Command auditing middleware for Commanded CQRS/ES applications
+    """
   end
 
   defp package do
@@ -36,8 +36,9 @@ Command auditing middleware for Commanded CQRS/ES applications
       files: ["lib", "priv", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Ben Smith"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/commanded/commanded-audit-middleware",
-               "Docs" => "https://hexdocs.pm/commanded_audit_middleware/"}
+      links: %{
+        "GitHub" => "https://github.com/commanded/commanded-audit-middleware"
+      }
     ]
   end
 
@@ -46,11 +47,10 @@ Command auditing middleware for Commanded CQRS/ES applications
       {:commanded, ">= 0.18.0", runtime: false},
       {:ecto, "~> 3.0"},
       {:ecto_sql, "~> 3.0"},
-      {:ex_doc, "~> 0.18", only: :dev},
-      {:mix_test_watch, "~> 0.5", only: :dev},
-      {:postgrex, "~> 0.14.0"},
       {:elixir_uuid, "~> 1.2"},
-      {:jason, "~> 1.1"}
+      {:ex_doc, "~> 0.19", only: :dev},
+      {:jason, "~> 1.1"},
+      {:postgrex, "~> 0.14.0"}
     ]
   end
 
