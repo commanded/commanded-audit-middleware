@@ -57,7 +57,8 @@ Command auditing middleware for Commanded CQRS/ES applications
   defp aliases do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"]
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.reset --quiet", "test"]
     ]
   end
 end

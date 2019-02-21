@@ -88,4 +88,6 @@ mix test
 ### Contributors
 
 - [Ben Smith](https://github.com/slashdotdash)
+- [CptBreeza](https://github.com/CptBreeza)
 - [Iuri L. Machado](https://github.com/imetallica)
+- [Mikhail Karavaev](https://github.com/mkaravaev)
