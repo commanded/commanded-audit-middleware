@@ -14,65 +14,73 @@ MIT License
 
 ## Getting started
 
-  1. Add `commanded_audit_middleware` to your list of dependencies in `mix.exs`:
+1. Add `commanded_audit_middleware` to your list of dependencies in `mix.exs`:
 
-      ```elixir
-      def deps do
-        [
-          {:commanded_audit_middleware, "~> 0.4"},
-        ]
-      end
-      ```
+   ```elixir
+   def deps do
+     [
+       {:commanded_audit_middleware, "~> 0.4"},
+     ]
+   end
+   ```
 
-  2. Add the following config section to `config/config.exs`:
+2. Add the following config section to `config/config.exs`:
 
-      ```elixir
-      config :commanded_audit_middleware,
-        ecto_repos: [Commanded.Middleware.Auditing.Repo],
-        serializer: Commanded.Serialization.JsonSerializer
-      ```
+   ```elixir
+   config :commanded_audit_middleware,
+     ecto_repos: [Commanded.Middleware.Auditing.Repo],
+     serializer: Commanded.Serialization.JsonSerializer
+   ```
 
-  3. By default, `commanded_audit_middleware` should filter all `password`, `password_confirmation` and `secret` in your schemas.
-     If you want to **override** and define your own filters, you should add the following to your `config/config.exs`:
-      ```elixir
-      config :commanded_audit_middleware,
-        filter_fields: [:credit_card_number, :btc_private_key]
-      ```
+   If you prefer to instead serialize the `command_audit`'s `data`
+   and `metadata` columns as JSONB, choose this serializer:
 
-  4. Add the following config section to each environment's config (e.g. `config/dev.exs`):
+   ```elixir
+     serializer: EventStore.JsonbSerializer
+   ```
 
-      ```elixir
-      config :commanded_audit_middleware, Commanded.Middleware.Auditing.Repo,
-        adapter: Ecto.Adapters.Postgres,
-        database: "commanded_audit_middleware_dev",
-        username: "postgres",
-        password: "postgres",
-        hostname: "localhost",
-        port: "5432"
-      ```
+3. By default, `commanded_audit_middleware` should filter all `password`, `password_confirmation` and `secret` in your schemas.
+   If you want to **override** and define your own filters, you should add the following to your `config/config.exs`:
 
-  5. Fetch and compile mix dependencies:
+   ```elixir
+   config :commanded_audit_middleware,
+     filter_fields: [:credit_card_number, :btc_private_key]
+   ```
 
-      ```console
-      $ mix do deps.get, deps.compile
-      ```
+4. Add the following config section to each environment's config (e.g. `config/dev.exs`):
 
-  6. Create and migrate the command audit database:
+   ```elixir
+   config :commanded_audit_middleware, Commanded.Middleware.Auditing.Repo,
+     adapter: Ecto.Adapters.Postgres,
+     database: "commanded_audit_middleware_dev",
+     username: "postgres",
+     password: "postgres",
+     hostname: "localhost",
+     port: "5432"
+   ```
 
-      ```console
-      $ mix ecto.create -r Commanded.Middleware.Auditing.Repo
-      $ mix ecto.migrate -r Commanded.Middleware.Auditing.Repo
-      ```
+5. Fetch and compile mix dependencies:
 
-  7. Add the middleware to your application's Commanded router.
+   ```console
+   $ mix do deps.get, deps.compile
+   ```
 
-      ```elixir
-      defmodule Router do
-        use Commanded.Commands.Router
+6. Create and migrate the command audit database:
 
-        middleware Commanded.Middleware.Auditing
-      end
-      ```
+   ```console
+   $ mix ecto.create -r Commanded.Middleware.Auditing.Repo
+   $ mix ecto.migrate -r Commanded.Middleware.Auditing.Repo
+   ```
+
+7. Add the middleware to your application's Commanded router.
+
+   ```elixir
+   defmodule Router do
+     use Commanded.Commands.Router
+
+     middleware Commanded.Middleware.Auditing
+   end
+   ```
 
 ### Contributing
 
