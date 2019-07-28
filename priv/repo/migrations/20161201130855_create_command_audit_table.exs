@@ -6,8 +6,10 @@ defmodule Commanded.Middleware.Auditing.Repo.Migrations.CreateCommandAuditTable 
       add :command_uuid, :text, primary_key: true
       add :occurred_at, :naive_datetime
       add :command_type, :text
-      add :data, :bytea
-      add :metadata, :bytea
+      # add :data, :bytea
+      # add :metadata, :bytea
+      add :data, :jsonb, null: false, default: "{}"
+      add :metadata, :jsonb, null: false, default: "{}"
       add :success, :boolean
       add :execution_duration_usecs, :integer
       add :error, :text
