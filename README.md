@@ -33,10 +33,18 @@ MIT License
    ```
 
    If you prefer to instead serialize the `command_audit`'s `data`
-   and `metadata` columns as JSONB, choose this serializer:
+   and `metadata` columns as [JSONB](https://www.postgresql.org/docs/current/datatype-json.html)
+   (which [can be indexed and queried efficiently](https://www.postgresql.org/docs/current/functions-json.html)),
+   choose an Ecto schema type of `:map` and a PostgreSQL database type of `:jsonb`:
 
    ```elixir
-     serializer: EventStore.JsonbSerializer
+   config :commanded_audit_middleware,
+     ecto_repos: [Commanded.Middleware.Auditing.Repo],
+     serializer: EventStore.JsonbSerializer,
+     data_column_schema_type: :map,
+     metadata_column_schema_type: :map,
+     data_column_db_type: :jsonb,
+     metadata_column_db_type: :jsonb
    ```
 
 3. By default, `commanded_audit_middleware` should filter all `password`, `password_confirmation` and `secret` in your schemas.
