@@ -19,8 +19,6 @@ defmodule Commanded.Middleware.Auditing.CommandAudit do
     field(:correlation_id, :binary_id)
     field(:occurred_at, :naive_datetime_usec)
     field(:command_type, :string)
-    # field(:data, :binary)
-    # field(:metadata, :binary)
     field(:data, @data_column_schema_type)
     field(:metadata, @metadata_column_schema_type)
     field(:success, :boolean)
