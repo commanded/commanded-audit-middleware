@@ -1,10 +1,14 @@
 language: elixir
 
+cache:
+  directories:
+  - deps
+
 elixir:
-  - 1.8.1
+  - 1.9.1
 
 otp_release:
-  - 21.0
+  - 22.0
 
 services:
   - postgresql
@@ -14,3 +18,6 @@ dist: trusty
 
 addons:
   postgresql: "9.6"
+
+script:
+  - mix test.all
