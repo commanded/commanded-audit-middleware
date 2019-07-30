@@ -1,5 +1,9 @@
 # Changelog
 
+## Next release
+
+- Support `jsonb` column data type for data and metadata audit fields ([#9](https://github.com/commanded/commanded-audit-middleware/pull/9)).
+
 ## v0.4.0
 
 ### Enhancements

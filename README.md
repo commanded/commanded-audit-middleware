@@ -106,4 +106,5 @@ mix test
 - [Ben Smith](https://github.com/slashdotdash)
 - [CptBreeza](https://github.com/CptBreeza)
 - [Iuri L. Machado](https://github.com/imetallica)
+- [James Lavin](https://github.com/JamesLavin)
 - [Mikhail Karavaev](https://github.com/mkaravaev)
