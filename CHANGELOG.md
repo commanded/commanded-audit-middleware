@@ -1,7 +1,8 @@
 # Changelog
 
-## Next release
+## v1.0.0
 
+- Support Commanded v1.0.0 ([#10](https://github.com/commanded/commanded-audit-middleware/pull/10)).
 - Support `jsonb` column data type for data and metadata audit fields ([#9](https://github.com/commanded/commanded-audit-middleware/pull/9)).
 
 ## v0.4.0

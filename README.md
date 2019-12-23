@@ -18,9 +18,7 @@ MIT License
 
    ```elixir
    def deps do
-     [
-       {:commanded_audit_middleware, "~> 0.4"},
-     ]
+     [{:commanded_audit_middleware, "~> 1.0"}]
    end
    ```
 
@@ -32,10 +30,7 @@ MIT License
      serializer: Commanded.Serialization.JsonSerializer
    ```
 
-   If you prefer to instead serialize the `command_audit`'s `data`
-   and `metadata` columns as [JSONB](https://www.postgresql.org/docs/current/datatype-json.html)
-   (which [can be indexed and queried efficiently](https://www.postgresql.org/docs/current/functions-json.html)),
-   choose an Ecto schema type of `:map` and a PostgreSQL database type of `:jsonb`:
+   If you prefer to instead serialize the `command_audit`'s `data` and `metadata` columns as [JSONB](https://www.postgresql.org/docs/current/datatype-json.html) (which [can be indexed and queried efficiently](https://www.postgresql.org/docs/current/functions-json.html)), choose an Ecto schema type of `:map` and a PostgreSQL database type of `:jsonb`:
 
    ```elixir
    config :commanded_audit_middleware,
@@ -47,8 +42,7 @@ MIT License
      metadata_column_db_type: :jsonb
    ```
 
-3. By default, `commanded_audit_middleware` should filter all `password`, `password_confirmation` and `secret` in your schemas.
-   If you want to **override** and define your own filters, you should add the following to your `config/config.exs`:
+3. By default, `commanded_audit_middleware` should filter all `password`, `password_confirmation` and `secret` in your schemas. If you want to **override** and define your own filters, you should add the following to your `config/config.exs`:
 
    ```elixir
    config :commanded_audit_middleware,
@@ -80,13 +74,13 @@ MIT License
    $ mix ecto.migrate -r Commanded.Middleware.Auditing.Repo
    ```
 
-7. Add the middleware to your application's Commanded router.
+7. Add the middleware to any Commanded router.
 
    ```elixir
    defmodule Router do
      use Commanded.Commands.Router
 
-     middleware Commanded.Middleware.Auditing
+     middleware(Commanded.Middleware.Auditing)
    end
    ```
 
@@ -105,6 +99,7 @@ mix test
 
 - [Ben Smith](https://github.com/slashdotdash)
 - [CptBreeza](https://github.com/CptBreeza)
+- [Daniel Chambers](https://github.com/hoodsuphopeshigh)
 - [Iuri L. Machado](https://github.com/imetallica)
 - [James Lavin](https://github.com/JamesLavin)
 - [Mikhail Karavaev](https://github.com/mkaravaev)
