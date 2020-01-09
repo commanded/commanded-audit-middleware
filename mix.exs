@@ -1,10 +1,12 @@
 defmodule Commanded.Middleware.Auditing.Mixfile do
   use Mix.Project
 
+  @version "1.0.0"
+
   def project do
     [
       app: :commanded_audit_middleware,
-      version: "1.0.0",
+      version: @version,
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       description: description(),
@@ -19,11 +21,8 @@ defmodule Commanded.Middleware.Auditing.Mixfile do
 
   def application do
     [
-      extra_applications: [
-        :logger,
-        :ecto_sql
-      ],
-      mod: {Commanded.Middleware.Auditing.Supervisor, []}
+      extra_applications: [:logger],
+      mod: {Commanded.Middleware.Auditing.Application, []}
     ]
   end
 
@@ -46,11 +45,11 @@ defmodule Commanded.Middleware.Auditing.Mixfile do
 
   defp deps do
     [
-      {:commanded, "~> 1.0.0", runtime: false},
+      {:commanded, "~> 1.0", runtime: false},
       {:ecto, "~> 3.3"},
       {:ecto_sql, "~> 3.3"},
       {:elixir_uuid, "~> 1.2"},
-      {:ex_doc, "~> 0.19", only: :dev},
+      {:ex_doc, ">= 0.0.0", only: :dev},
       {:jason, "~> 1.1"},
       {:postgrex, "~> 0.15.0"}
     ]
