@@ -21,7 +21,7 @@ defmodule Commanded.Middleware.Auditing.Mixfile do
 
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :ssl],
       mod: {Commanded.Middleware.Auditing.Application, []}
     ]
   end
