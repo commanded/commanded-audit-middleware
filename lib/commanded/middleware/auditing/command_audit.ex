@@ -12,6 +12,7 @@ defmodule Commanded.Middleware.Auditing.CommandAudit do
                                  :binary
                                )
 
+  @schema_prefix Application.compile_env(:commanded_audit_middleware, :prefix, "public")
   @primary_key {:command_uuid, :string, []}
 
   schema "command_audit" do
