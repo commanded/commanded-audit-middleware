@@ -1,12 +1,12 @@
 defmodule Commanded.Middleware.Auditing.CommandAudit do
   use Ecto.Schema
 
-  @data_column_schema_type Application.get_env(
+  @data_column_schema_type Application.compile_env(
                              :commanded_audit_middleware,
                              :data_column_schema_type,
                              :binary
                            )
-  @metadata_column_schema_type Application.get_env(
+  @metadata_column_schema_type Application.compile_env(
                                  :commanded_audit_middleware,
                                  :metadata_column_schema_type,
                                  :binary

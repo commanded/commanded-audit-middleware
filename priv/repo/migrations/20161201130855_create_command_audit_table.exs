@@ -1,12 +1,12 @@
 defmodule Commanded.Middleware.Auditing.Repo.Migrations.CreateCommandAuditTable do
   use Ecto.Migration
 
-  @data_column_db_type Application.get_env(
+  @data_column_db_type Application.compile_env(
                          :commanded_audit_middleware,
                          :data_column_db_type,
                          :bytea
                        )
-  @metadata_column_db_type Application.get_env(
+  @metadata_column_db_type Application.compile_env(
                              :commanded_audit_middleware,
                              :metadata_column_db_type,
                              :bytea

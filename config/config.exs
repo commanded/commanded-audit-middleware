@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :commanded_audit_middleware,
   ecto_repos: [Commanded.Middleware.Auditing.Repo],

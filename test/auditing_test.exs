@@ -2,7 +2,7 @@ defmodule Commanded.Middleware.AuditingTest do
   use ExUnit.Case
 
   alias Commanded.Middleware.Auditing
-  alias Commanded.Middleware.Auditing.{CommandAudit, Repo}
+  alias Commanded.Middleware.Auditing.{CommandAudit, Repo, UUID}
   alias Commanded.Middleware.Pipeline
 
   defmodule Command do

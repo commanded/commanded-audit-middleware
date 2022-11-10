@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :commanded_audit_middleware, Commanded.Middleware.Auditing.Repo,
   adapter: Ecto.Adapters.Postgres,
