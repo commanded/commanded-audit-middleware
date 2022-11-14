@@ -31,19 +31,18 @@ defmodule Commanded.Middleware.Auditing do
       metadata: metadata
     } = pipeline
 
-    audit = %CommandAudit{
-      command_uuid: command_uuid,
-      causation_id: causation_id,
-      correlation_id: correlation_id,
-      occurred_at: occurred_at,
-      command_type: Atom.to_string(command.__struct__),
-      data: serialize(filter(command)),
-      metadata: serialize(metadata)
-    }
+    audit =
+      Repo.insert!(%CommandAudit{
+        command_uuid: command_uuid,
+        causation_id: causation_id,
+        correlation_id: correlation_id,
+        occurred_at: occurred_at,
+        command_type: Atom.to_string(command.__struct__),
+        data: serialize(filter(command)),
+        metadata: serialize(metadata)
+      })
 
-    Repo.insert!(audit)
-
-    pipeline
+    assign(pipeline, :command_audit, audit)
   end
 
   defp success(%Pipeline{} = pipeline) do
